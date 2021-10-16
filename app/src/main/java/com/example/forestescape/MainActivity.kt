@@ -9,6 +9,9 @@ import com.google.ar.core.ArCoreApk
 
 class MainActivity : AppCompatActivity() {
     private lateinit var permissionsViewModel: PermissionsViewModel
+    private lateinit var arInstallViewModel: ArSessionViewModel
+
+    private var mUserRequestedInstall: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,22 +21,29 @@ class MainActivity : AppCompatActivity() {
 
         permissionsViewModel = ViewModelProvider(this).get(PermissionsViewModel::class.java)
         finishIfPermissionIsDeniedNTimes(3)
+        arInstallViewModel = ViewModelProvider(this).get(ArSessionViewModel::class.java)
+        finishIfUserDeniedArCoreInstallation()
+        updateUserInstall()
+
     }
 
-    private fun finishIfPermissionIsDeniedNTimes(n:Int) {
-        permissionsViewModel.getCanceled().observe(this) {
-            if (it == n) {
-                this.finish()
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
         if (!permissionsViewModel.hasCameraPermission(this)) {
             permissionsViewModel.requestPermission()
         }
+        arInstallViewModel.requestSessionAndInstall(
+            ArCoreApk.getInstance()
+                .requestInstall(this, mUserRequestedInstall)!!
+        )
         return
+    }
+
+    private fun updateUserInstall() {
+        arInstallViewModel.userRequestedInstall.observe(this) {
+            mUserRequestedInstall = it
+        }
     }
 
     private fun finishIfArCoreNotAvailable() {
@@ -45,6 +55,22 @@ class MainActivity : AppCompatActivity() {
         }
         if (!availability.isSupported) {
             finish()
+        }
+    }
+
+    private fun finishIfUserDeniedArCoreInstallation() {
+        arInstallViewModel.userDeclinedInstallation.observe(this) {
+            if (it == true) {
+                finish()
+            }
+        }
+    }
+
+    private fun finishIfPermissionIsDeniedNTimes(n: Int) {
+        permissionsViewModel.getCanceled().observe(this) {
+            if (it == n) {
+                this.finish()
+            }
         }
     }
 }

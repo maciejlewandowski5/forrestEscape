@@ -45,4 +45,5 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
         super.onCleared()
         cancelRequest()
     }
+
 }
