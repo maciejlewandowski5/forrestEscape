@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "687519642351",
+    "firebase_url": "https://forestescape-912d0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "forestescape-912d0",
+    "storage_bucket": "forestescape-912d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687519642351:android:614d232235d6bf4795a11a",
+        "android_client_info": {
+          "package_name": "com.example.forestescape"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687519642351-fa16pmp6lig7rv2dq1cl0ns03obmfo4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZBo9rRxdIv6XHc4zpaCmWi2AsQ4twSxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687519642351-fa16pmp6lig7rv2dq1cl0ns03obmfo4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

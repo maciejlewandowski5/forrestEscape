@@ -5,6 +5,9 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
@@ -37,7 +40,7 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
     fun hasCameraPermission(activity: Activity?): Boolean {
         return (ContextCompat.checkSelfPermission(
             activity!!,
-            "android.permission.CAMERA"
+            "android.permission.CAMERA",
         ) == PackageManager.PERMISSION_GRANTED)
     }
 
