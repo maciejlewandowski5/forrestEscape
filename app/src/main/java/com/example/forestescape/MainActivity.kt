@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateUserInstall()
-
-
     }
 
 
@@ -65,12 +63,14 @@ class MainActivity : AppCompatActivity() {
         if (!internetConnectionViewModel.isOnline()) {
             finish()
         }
+
         arInstallViewModel.requestSessionAndInstall(
             ArCoreApk.getInstance()
                 .requestInstall(this, mUserRequestedInstall)!!
         )
         return
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         // Because we do not want user to be able to exit app. There is a game. Exiting app is
         // possible via firebase setting
     }
+
 
     private fun updateUserInstall() {
         arInstallViewModel.userRequestedInstall.observe(this) {
