@@ -1,6 +1,7 @@
 package com.example.forestescape
 
 import android.app.Application
+import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
@@ -12,45 +13,25 @@ import androidx.lifecycle.LiveData
 import android.net.wifi.WifiManager
 
 import android.net.wifi.WifiInfo
+import android.net.NetworkInfo
+import androidx.core.content.ContextCompat
 
-
-
+import androidx.core.content.ContextCompat.getSystemService
 
 
 class InternetConnectionViewModel(application: Application) : AndroidViewModel(application) {
-    val wifiSignalStrength = WifiSignalStrengthLiveData()
-
-    inner class WifiSignalStrengthLiveData : LiveData<Int>() {
-        private val connectivityManager: ConnectivityManager by lazy {
+    fun isOnline(): Boolean {
+        val connectivityManager =
             getApplication<Application>()
-                .getSystemService(ConnectivityManager::class.java) as ConnectivityManager
-        }
-
-        private val callbacks = object : ConnectivityManager.NetworkCallback() {
-            override fun onCapabilitiesChanged(
-                network: Network,
-                networkCapabilities: NetworkCapabilities
-            ) {
-                super.onCapabilitiesChanged(network, networkCapabilities)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    postValue(networkCapabilities.signalStrength)
-                }
-            }
-        }
-
-        override fun onActive() {
-            val networkRequest: NetworkRequest =
-                NetworkRequest.Builder()
-                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                    .build()
-            connectivityManager.registerNetworkCallback(networkRequest, callbacks)
-
-
-        }
-
-        override fun onInactive() {
-            connectivityManager.unregisterNetworkCallback(callbacks)
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val nw = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+        return when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+            else -> false
         }
     }
-
 }
