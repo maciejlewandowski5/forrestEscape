@@ -24,7 +24,8 @@ interface GameRepository {
     suspend fun initializeGameSession(deviceId: String): Either<Exception, String>
 
     @ExperimentalCoroutinesApi
-    fun asFlow(key: String, deviceId: String?): Flow<GameSession>
+    fun asFlow(key: String, deviceId: String?): Flow<GameLiveData>
+    suspend fun sendGameSession(value: Game?)
 }
 
 class FireBaseGameRepository : GameRepository {
@@ -32,23 +33,23 @@ class FireBaseGameRepository : GameRepository {
 
     override suspend fun initializeGameSession(deviceId: String): Either<Exception, String> {
         return database.getReference("games").push().key?.let { key ->
-            database.getReference("games").child(key).setValue(GameSession(key,deviceId)).await()
+            database.getReference("games").child(key).setValue(Game(key, deviceId)).await()
             key.right()
         } ?: IllegalStateException("Could not initialize game session").left()
     }
 
 
     @ExperimentalCoroutinesApi
-    override fun asFlow(key: String, deviceId: String?): Flow<GameSession> = callbackFlow {
+    override fun asFlow(key: String, deviceId: String?): Flow<Game> = callbackFlow {
         val callback = (object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    trySendBlocking(snapshot.getValue(GameSession::class.java))
+                    trySendBlocking(snapshot.getValue(Game::class.java))
                         .onFailure { _ ->
                             // Downstream has been cancelled or failed, can log here
                         }
                 } else {
-                    trySendBlocking(snapshot.getValue(GameSession::class.java)!!)
+                    trySendBlocking(snapshot.getValue(Game::class.java)!!)
                         .onFailure { _ ->
                             // Downstream has been cancelled or failed, can log here
                         }
@@ -63,6 +64,12 @@ class FireBaseGameRepository : GameRepository {
         val addValueEventListener = database.getReference("games").child(key)
             .addValueEventListener(callback)
         awaitClose { addValueEventListener.onCancelled(DatabaseError.fromException(Error("asd"))) }
+    }
+
+    override suspend fun sendGameSession(value: Game?) {
+        if (value != null) {
+            value.id?.let { database.getReference("games").child(it).setValue(value).await() }
+        }
     }
 }
 

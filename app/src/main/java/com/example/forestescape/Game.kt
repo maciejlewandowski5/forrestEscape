@@ -7,19 +7,61 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @IgnoreExtraProperties
-data class GameSession(
+data class Game(
     @DocumentId
     var id: String?,
     var gameStarted: String,
     var currentGame: CurrentGame,
     var deviceId: String?,
+    var isError: Boolean,
+    var light: Float,
+    var deviceRotationX: Float,
+    var deviceRotationY: Float,
+    var deviceRotationZ: Float,
+    var azimuth: Float,
+    var latitude: Double?,
+    var longitude: Double?,
+    var attitude: Double?,
+    var phoneSignalStrength: Float,
+    var wifiSignalStrength: Float,
+    var batteryLevel: Int
 ) {
-    constructor() : this(null, LocalDateTime.now().format(dateFormatter), startingGame, null)
+    constructor() : this(
+        null,
+        LocalDateTime.now().format(dateFormatter),
+        startingGame,
+        null,
+        false,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        null,
+        null,
+        null,
+        0f,
+        0f,
+        0
+    )
+
     constructor(key: String, deviceId: String) : this(
         key,
         LocalDateTime.now().format(dateFormatter),
         startingGame,
-        deviceId
+        deviceId,
+        false,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        null,
+        null,
+        null,
+        0f,
+        0f,
+        0
     )
 
     @Exclude
@@ -28,7 +70,12 @@ data class GameSession(
             "id" to id,
             "gameStarted" to gameStarted,
             "currentGame" to currentGame,
-            "deviceId" to deviceId
+            "deviceId" to deviceId,
+            "isError" to isError,
+            "light" to light,
+            "deviceRotationX" to deviceRotationX,
+            "deviceRotationY" to deviceRotationY,
+            "deviceRotationZ" to deviceRotationZ,
         )
     }
 

@@ -7,9 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import com.google.ar.core.ArCoreApk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import android.app.ActivityManager
 import android.content.Context
 import android.provider.Settings
@@ -20,9 +17,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var arInstallViewModel: ArSessionViewModel
     private lateinit var gameViewModel: GameViewModel
     private lateinit var internetConnectionViewModel: InternetConnectionViewModel
+    private lateinit var sensorsViewModel: SensorViewModel
+    private lateinit var batteryLevelViewModel: BatteryLevelViewModel
+    private lateinit var locationViewModel: LocationViewModel
 
     private var mUserRequestedInstall: Boolean = true
-    private var gameSession: GameSession? = null
+    private var game: Game? = null
 
 
     @SuppressLint("HardwareIds") // Id is needed to identity device via management system
@@ -47,8 +47,21 @@ class MainActivity : AppCompatActivity() {
                 Settings.Secure.ANDROID_ID
             )
         )
-        gameViewModel.gameSession.observe(this) {
-            gameSession = it
+        gameViewModel.gameModel.observe(this) {
+            game = it
+        }
+        sensorsViewModel =
+            ViewModelProvider(this).get(SensorViewModel::class.java)
+        sensorsViewModel.sensorLiveData.observe(this) { value ->
+            value?.let { gameViewModel.setSensorsData(it) }
+        }
+        batteryLevelViewModel = ViewModelProvider(this).get(BatteryLevelViewModel::class.java)
+        batteryLevelViewModel.batteryLevel.observe(this) { value ->
+            gameViewModel.setBatteryLevel(value)
+        }
+        locationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
+        locationViewModel.location.observe(this){ value ->
+            gameViewModel.setLocation(value)
         }
 
         updateUserInstall()
@@ -57,7 +70,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!permissionsViewModel.hasCameraPermission(this)) {
+        if (!permissionsViewModel.hasCameraPermission(this) ||
+            !permissionsViewModel.hasCoarseLocationPermission(this) ||
+            !permissionsViewModel.hasFineLocationPermission(this)
+        ) {
             permissionsViewModel.requestPermission()
         }
         if (!internetConnectionViewModel.isOnline()) {

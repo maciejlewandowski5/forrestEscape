@@ -22,7 +22,9 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
     fun requestPermission(): Cancellable {
         return PermissionRequester.requestPermissions(
             getApplication(),
-            "android.permission.CAMERA"
+            "android.permission.CAMERA",
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.ACCESS_COARSE_LOCATION"
         ) {
             if (it.firstOrNull()?.state == State.GRANTED) {
                 Toast.makeText(getApplication(), "GRANTED", Toast.LENGTH_LONG).show()
@@ -41,6 +43,18 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
         return (ContextCompat.checkSelfPermission(
             activity!!,
             "android.permission.CAMERA",
+        ) == PackageManager.PERMISSION_GRANTED)
+    }
+    fun hasFineLocationPermission(activity: Activity?): Boolean {
+        return (ContextCompat.checkSelfPermission(
+            activity!!,
+            "android.permission.ACCESS_FINE_LOCATION",
+        ) == PackageManager.PERMISSION_GRANTED)
+    }
+    fun hasCoarseLocationPermission(activity: Activity?): Boolean {
+        return (ContextCompat.checkSelfPermission(
+            activity!!,
+            "android.permission.ACCESS_COARSE_LOCATION",
         ) == PackageManager.PERMISSION_GRANTED)
     }
 

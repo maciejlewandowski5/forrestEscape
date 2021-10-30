@@ -1,42 +1,56 @@
 package com.example.forestescape
 
 import android.app.Application
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.wifi.WifiManager
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 
-import android.content.Intent
+import android.net.Network
+import android.net.NetworkRequest
+import android.os.Build
+import androidx.lifecycle.LiveData
+import android.net.wifi.WifiManager
+
+import android.net.wifi.WifiInfo
+
+
+
 
 
 class InternetConnectionViewModel(application: Application) : AndroidViewModel(application) {
+    val wifiSignalStrength = WifiSignalStrengthLiveData()
 
-    fun respondToNoInternetConnection() {
-        TODO("Waiting for PO decision")
-    }
+    inner class WifiSignalStrengthLiveData : LiveData<Int>() {
+        private val connectivityManager: ConnectivityManager by lazy {
+            getApplication<Application>()
+                .getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        }
 
-    fun isOnline(): Boolean {
-        val connectivityManager =
-            getApplication<Application>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        if (connectivityManager != null) {
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-                    return true
+        private val callbacks = object : ConnectivityManager.NetworkCallback() {
+            override fun onCapabilitiesChanged(
+                network: Network,
+                networkCapabilities: NetworkCapabilities
+            ) {
+                super.onCapabilitiesChanged(network, networkCapabilities)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    postValue(networkCapabilities.signalStrength)
                 }
             }
         }
-        return false
+
+        override fun onActive() {
+            val networkRequest: NetworkRequest =
+                NetworkRequest.Builder()
+                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                    .build()
+            connectivityManager.registerNetworkCallback(networkRequest, callbacks)
+
+
+        }
+
+        override fun onInactive() {
+            connectivityManager.unregisterNetworkCallback(callbacks)
+        }
     }
+
 }
