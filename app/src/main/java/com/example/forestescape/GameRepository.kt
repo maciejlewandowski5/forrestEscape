@@ -23,9 +23,10 @@ interface GameRepository {
 
     suspend fun initializeGameSession(deviceId: String): Either<Exception, String>
 
+    suspend fun sendGameSession(mapToUpdate: Map<String, Double>, game: GameMutableLiveData)
+
     @ExperimentalCoroutinesApi
-    fun asFlow(key: String, deviceId: String?): Flow<GameLiveData>
-    suspend fun sendGameSession(value: Game?)
+    fun currentGameAsFlow(key: String): Flow<CurrentGame?>
 }
 
 class FireBaseGameRepository : GameRepository {
@@ -40,19 +41,11 @@ class FireBaseGameRepository : GameRepository {
 
 
     @ExperimentalCoroutinesApi
-    override fun asFlow(key: String, deviceId: String?): Flow<Game> = callbackFlow {
+    override fun currentGameAsFlow(key: String): Flow<CurrentGame?> = callbackFlow {
         val callback = (object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    trySendBlocking(snapshot.getValue(Game::class.java))
-                        .onFailure { _ ->
-                            // Downstream has been cancelled or failed, can log here
-                        }
-                } else {
-                    trySendBlocking(snapshot.getValue(Game::class.java)!!)
-                        .onFailure { _ ->
-                            // Downstream has been cancelled or failed, can log here
-                        }
+                trySendBlocking(snapshot.getValue(CurrentGame::class.java)).onFailure { _ ->
+                    // Downstream has been cancelled or failed, can log here
                 }
             }
 
@@ -62,14 +55,21 @@ class FireBaseGameRepository : GameRepository {
 
         })
         val addValueEventListener = database.getReference("games").child(key)
+            .child("currentGame")
             .addValueEventListener(callback)
         awaitClose { addValueEventListener.onCancelled(DatabaseError.fromException(Error("asd"))) }
     }
 
-    override suspend fun sendGameSession(value: Game?) {
-        if (value != null) {
-            value.id?.let { database.getReference("games").child(it).setValue(value).await() }
+    override suspend fun sendGameSession(
+        mapToUpdate: Map<String, Double>,
+        game: GameMutableLiveData,
+    ) {
+        game.id.value?.let {
+            database.getReference("games").child(it)
+                .updateChildren(mapToUpdate).await()
         }
     }
 }
+
+
 

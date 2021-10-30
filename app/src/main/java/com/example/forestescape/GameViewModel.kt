@@ -9,52 +9,71 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class GameViewModel(private val repository: GameRepository) : ViewModel() {
-    private val _gameModel: MutableLiveData<Game?> = MutableLiveData(null)
-    val gameModel: LiveData<Game?> = _gameModel
+    private var _gameModel: GameMutableLiveData? = null
+    val gameModel: GameLiveData? = _gameModel
 
     @ExperimentalCoroutinesApi
     fun initializeGameSession(deviceId: String) {
         viewModelScope.launch {
-            if (_gameModel.value == null) {
+            if (_gameModel == null) {
                 repository.initializeGameSession(deviceId)
                     .fold({ // TODO do not do anything if collect isnt send
                     }, { key ->
-                        repository.asFlow(key, deviceId).collect { _gameModel.value = it }
+                        _gameModel = GameMutableLiveData(key, deviceId)
+                        repository.currentGameAsFlow(key)
+                            .collect { _gameModel?.currentGame?.value = it }
                     })
             }
         }
     }
 
     fun setSensorsData(sensorsData: SensorsData) {
-        _gameModel.value?.light = sensorsData.light
-        _gameModel.value?.azimuth = sensorsData.azimuth
-        _gameModel.value?.deviceRotationX = sensorsData.deviceRotationX
-        _gameModel.value?.deviceRotationY = sensorsData.deviceRotationY
-        _gameModel.value?.deviceRotationZ = sensorsData.deviceRotationZ
-        sendGameSession()
+        _gameModel?.light?.value = sensorsData.light
+        _gameModel?.azimuth?.value = sensorsData.azimuth
+        _gameModel?.deviceRotationX?.value = sensorsData.deviceRotationX
+        _gameModel?.deviceRotationY?.value = sensorsData.deviceRotationY
+        _gameModel?.deviceRotationZ?.value = sensorsData.deviceRotationZ
+        sendGameSession(
+            mapOf(
+                "light" to sensorsData.light.toDouble(),
+                "azimuth" to sensorsData.azimuth.toDouble(),
+                "deviceRotationX" to sensorsData.deviceRotationX.toDouble(),
+                "deviceRotationY" to sensorsData.deviceRotationY.toDouble(),
+                "deviceRotationZ" to sensorsData.deviceRotationZ.toDouble(),
+            )
+        )
     }
 
     fun setBatteryLevel(value: Int) {
-        _gameModel.value?.batteryLevel = value
-        sendGameSession()
+        _gameModel?.batteryLevel?.value = value
+        sendGameSession(mapOf("batteryLevel" to value.toDouble()))
     }
 
-    private fun sendGameSession() {
-        viewModelScope.launch {
-            repository.sendGameSession(_gameModel.value)
+    private fun sendGameSession(mapToUpdate: Map<String, Double>) {
+        if (_gameModel != null) {
+            viewModelScope.launch {
+                repository.sendGameSession(mapToUpdate, _gameModel!!)
+            }
         }
     }
 
     fun setLocation(value: Location) {
-        _gameModel.value?.latitude = value.latitude
-        _gameModel.value?.longitude = value.longitude
-        _gameModel.value?.attitude = value.altitude
+        _gameModel?.latitude?.value = value.latitude
+        _gameModel?.longitude?.value = value.longitude
+        _gameModel?.attitude?.value = value.altitude
+        sendGameSession(
+            mapOf(
+                "latitude" to value.latitude,
+                "longitude" to value.longitude,
+                "altitude" to value.altitude
+            )
+        )
     }
 }
 
 class GameViewModelFactory(private val repository: GameRepository) : ViewModelProvider.Factory {
 
-
+    @Suppress("UNCHECKED_CAST") // TODO
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return GameViewModel(repository) as T;
     }

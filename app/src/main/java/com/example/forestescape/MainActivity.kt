@@ -10,6 +10,7 @@ import com.google.ar.core.ArCoreApk
 import android.app.ActivityManager
 import android.content.Context
 import android.provider.Settings
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,9 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sensorsViewModel: SensorViewModel
     private lateinit var batteryLevelViewModel: BatteryLevelViewModel
     private lateinit var locationViewModel: LocationViewModel
+    private lateinit var navigatorViewModel: NavigatorViewModel
 
     private var mUserRequestedInstall: Boolean = true
-    private var game: Game? = null
 
 
     @SuppressLint("HardwareIds") // Id is needed to identity device via management system
@@ -41,14 +42,15 @@ class MainActivity : AppCompatActivity() {
         gameViewModel = ViewModelProvider(this, GameViewModelFactory(FireBaseGameRepository())).get(
             GameViewModel::class.java
         )
+        navigatorViewModel = ViewModelProvider(this).get(NavigatorViewModel::class.java)
         gameViewModel.initializeGameSession(
             Settings.Secure.getString(
                 contentResolver,
                 Settings.Secure.ANDROID_ID
             )
         )
-        gameViewModel.gameModel.observe(this) {
-            game = it
+        gameViewModel.gameModel?.currentGame?.observe(this) {
+            navigatorViewModel.setCurrentGame(it)
         }
         sensorsViewModel =
             ViewModelProvider(this).get(SensorViewModel::class.java)
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             gameViewModel.setBatteryLevel(value)
         }
         locationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
-        locationViewModel.location.observe(this){ value ->
+        locationViewModel.location.observe(this) { value ->
             gameViewModel.setLocation(value)
         }
 
