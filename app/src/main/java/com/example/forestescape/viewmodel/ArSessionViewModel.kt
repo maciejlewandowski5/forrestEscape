@@ -1,4 +1,4 @@
-package com.example.forestescape
+package com.example.forestescape.viewmodel
 
 import android.app.Activity
 import android.app.Application

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/noGame">
+
+    <fragment
+        android:id="@+id/passwordGame"
+        android:name="com.example.forestescape.PasswordGame"
+        android:label="fragment_password_game"
+        tools:layout="@layout/fragment_password_game">
+        <action
+            android:id="@+id/action_passwordGame_to_noGame"
+            app:destination="@id/noGame" />
+        <action
+            android:id="@+id/action_passwordGame_to_mapGame"
+            app:destination="@id/mapGame" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="PASSWORD" />
+    </fragment>
+    <fragment
+        android:id="@+id/noGame"
+        android:name="com.example.forestescape.NoGame"
+        android:label="fragment_no_game"
+        tools:layout="@layout/fragment_no_game" >
+        <action
+            android:id="@+id/action_noGame_to_passwordGame"
+            app:destination="@id/passwordGame" />
+        <action
+            android:id="@+id/action_noGame_to_mapGame"
+            app:destination="@id/mapGame" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapGame"
+        android:name="com.example.forestescape.MapGame"
+        android:label="fragment_map_game"
+        tools:layout="@layout/fragment_map_game" >
+        <action
+            android:id="@+id/action_mapGame_to_noGame"
+            app:destination="@id/noGame" />
+        <action
+            android:id="@+id/action_mapGame_to_passwordGame"
+            app:destination="@id/passwordGame" />
+    </fragment>
+</navigation>

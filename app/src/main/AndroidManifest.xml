@@ -10,6 +10,7 @@
     <uses-feature android:name="android.hardware.camera.ar" />
 
     <uses-permission android:name="android.permission.REORDER_TASKS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,10 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ForestEscape">
         <activity
+            android:name=".MapGame"
+            android:exported="true" />
+        <activity
+            android:name=".PasswordGame"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
