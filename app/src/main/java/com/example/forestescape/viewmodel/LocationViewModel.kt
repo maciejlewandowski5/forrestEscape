@@ -1,4 +1,4 @@
-package com.example.forestescape
+package com.example.forestescape.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -28,7 +28,6 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
                 if (p0 != null) {
                     postValue(p0.lastLocation)
                 }
-
             }
         }
 
