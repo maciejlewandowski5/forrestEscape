@@ -19,6 +19,9 @@
         <deepLink
             android:id="@+id/deepLink"
             app:uri="PASSWORD" />
+        <action
+            android:id="@+id/action_passwordGame_to_scanGame"
+            app:destination="@id/scanGame" />
     </fragment>
     <fragment
         android:id="@+id/noGame"
@@ -31,6 +34,9 @@
         <action
             android:id="@+id/action_noGame_to_mapGame"
             app:destination="@id/mapGame" />
+        <action
+            android:id="@+id/action_noGame_to_scanGame"
+            app:destination="@id/scanGame" />
     </fragment>
     <fragment
         android:id="@+id/mapGame"
@@ -43,5 +49,23 @@
         <action
             android:id="@+id/action_mapGame_to_passwordGame"
             app:destination="@id/passwordGame" />
+        <action
+            android:id="@+id/action_mapGame_to_scanGame"
+            app:destination="@id/scanGame" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanGame"
+        android:name="com.example.forestescape.ScanGame"
+        android:label="fragment_scan_game"
+        tools:layout="@layout/fragment_scan_game" >
+        <action
+            android:id="@+id/action_scanGame_to_noGame"
+            app:destination="@id/noGame" />
+        <action
+            android:id="@+id/action_scanGame_to_passwordGame"
+            app:destination="@id/passwordGame" />
+        <action
+            android:id="@+id/action_scanGame_to_mapGame"
+            app:destination="@id/mapGame" />
     </fragment>
 </navigation>

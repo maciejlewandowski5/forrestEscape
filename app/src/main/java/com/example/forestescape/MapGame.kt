@@ -56,7 +56,7 @@ class MapGame : Fragment(), Observer<CurrentGame> {
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         currentGameSharedViewModelViewModel =
             ViewModelProvider(requireActivity()).get(CurrentGameSharedViewModel::class.java)
-        currentGameSharedViewModelViewModel.currentGame.observe(requireActivity(),this)
+        currentGameSharedViewModelViewModel.currentGame.observe(requireActivity(), this)
     }
 
     override fun onPause() {
@@ -76,6 +76,7 @@ class MapGame : Fragment(), Observer<CurrentGame> {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onChanged(it: CurrentGame?) {
 
         println("MAP GAME OBSERVED CURRENT GAME: $it")
@@ -94,7 +95,7 @@ class MapGame : Fragment(), Observer<CurrentGame> {
 
             }
             CurrentGame.SCAN -> {
-
+                findNavController().navigate(MapGameDirections.actionMapGameToScanGame())
             }
         }
     }

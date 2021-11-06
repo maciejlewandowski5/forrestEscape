@@ -19,12 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ForestEscape">
         <activity
-            android:name=".MapGame"
-            android:exported="true" />
-        <activity
-            android:name=".PasswordGame"
-            android:exported="true" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

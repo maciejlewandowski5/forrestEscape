@@ -96,7 +96,7 @@ class NoGame : Fragment(), Observer<CurrentGame> {
 
             }
             CurrentGame.SCAN -> {
-
+                findNavController().navigate(NoGameDirections.actionNoGameToScanGame())
             }
         }
     }

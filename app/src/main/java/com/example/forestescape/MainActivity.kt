@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
 
-    @SuppressLint("HardwareIds") // Id is needed to identity device via management system
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -95,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("HardwareIds") // Id is needed to identity device via management system
     private fun setUpGameViewModel() {
         currentGameSharedViewModel =
             ViewModelProvider(this).get(CurrentGameSharedViewModel::class.java)
