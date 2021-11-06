@@ -1,0 +1,5 @@
+arcoreimg.exe build-db --input_image_list_path=.\image_list_file.txt.txt --output_db_path=.\images.imgdb
+
+arcoreimg.exe eval-img --input_image_path=dog.png
+
+adb connect 10:5:155:147

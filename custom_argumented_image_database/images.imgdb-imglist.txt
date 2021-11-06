@@ -1,0 +1,2 @@
+card_A|.\a.jpg|0.1
+card_B|.\b.jpg|0.2
