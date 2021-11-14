@@ -14,4 +14,9 @@
     <color name="black_overlay">#66000000</color>
     <color name="dark_blue">#011627</color>
     <color name="neon_green">#95D5B2</color>
+    <color name="dark_neon_green">#1B4332</color>
+    <color name="middle_neon_green">#2D6A4F</color>
+    <color name="specifin_neon_green">#52B788</color>
+    <color name="light_neon_green">#95D5B2</color>
+    <color name="very_light_neon_green">#B9FAD6</color>
 </resources>

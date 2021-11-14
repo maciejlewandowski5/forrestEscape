@@ -158,7 +158,7 @@ class PasswordGame : Fragment(), Observer<CurrentGame> {
                 findNavController().navigate(action)
             }
             CurrentGame.CHARGE -> {
-
+                findNavController().navigate(PasswordGameDirections.actionPasswordGameToChargeGame())
             }
             CurrentGame.SCAN -> {
                 findNavController().navigate(PasswordGameDirections.actionPasswordGameToScanGame())
