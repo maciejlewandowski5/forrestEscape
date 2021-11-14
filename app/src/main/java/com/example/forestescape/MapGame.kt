@@ -92,7 +92,7 @@ class MapGame : Fragment(), Observer<CurrentGame> {
                 findNavController().navigate(MapGameDirections.actionMapGameToNoGame())
             }
             CurrentGame.CHARGE -> {
-
+                findNavController().navigate(MapGameDirections.actionMapGameToChargeGame())
             }
             CurrentGame.SCAN -> {
                 findNavController().navigate(MapGameDirections.actionMapGameToScanGame())

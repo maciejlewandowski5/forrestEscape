@@ -149,7 +149,7 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
                 findNavController().navigate(ScanGameDirections.actionScanGameToNoGame())
             }
             CurrentGame.CHARGE -> {
-
+                findNavController().navigate(ScanGameDirections.actionScanGameToChargeGame())
             }
             CurrentGame.SCAN -> {
                 // do nothing

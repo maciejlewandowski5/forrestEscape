@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var batteryLevelViewModel: BatteryLevelViewModel
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var currentGameSharedViewModel: CurrentGameSharedViewModel
+    private lateinit var lightSharedViewModel: LightSharedViewModel
 
     private var mUserRequestedInstall: Boolean = true
 
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupSensorsViewModel()
         setupBatteryLevelViewModel()
         setupLocationViewModel()
+        lightSharedViewModel = ViewModelProvider(this).get(LightSharedViewModel::class.java)
     }
 
     private fun setupPermissionsViewModel() {
@@ -76,7 +78,10 @@ class MainActivity : AppCompatActivity() {
         sensorsViewModel =
             ViewModelProvider(this).get(SensorViewModel::class.java)
         sensorsViewModel.sensorLiveData.observe(this) { value ->
-            value?.let { gameViewModel.setSensorsData(it) }
+            value?.let {
+                gameViewModel.setSensorsData(it)
+                lightSharedViewModel.setLight(it.light)
+            }
         }
     }
 

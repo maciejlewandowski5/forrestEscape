@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_passwordGame_to_scanGame"
             app:destination="@id/scanGame" />
+        <action
+            android:id="@+id/action_passwordGame_to_chargeGame"
+            app:destination="@id/chargeGame" />
     </fragment>
     <fragment
         android:id="@+id/noGame"
@@ -37,6 +40,9 @@
         <action
             android:id="@+id/action_noGame_to_scanGame"
             app:destination="@id/scanGame" />
+        <action
+            android:id="@+id/action_noGame_to_chargeGame"
+            app:destination="@id/chargeGame" />
     </fragment>
     <fragment
         android:id="@+id/mapGame"
@@ -52,6 +58,9 @@
         <action
             android:id="@+id/action_mapGame_to_scanGame"
             app:destination="@id/scanGame" />
+        <action
+            android:id="@+id/action_mapGame_to_chargeGame"
+            app:destination="@id/chargeGame" />
     </fragment>
     <fragment
         android:id="@+id/scanGame"
@@ -67,5 +76,26 @@
         <action
             android:id="@+id/action_scanGame_to_mapGame"
             app:destination="@id/mapGame" />
+        <action
+            android:id="@+id/action_scanGame_to_chargeGame"
+            app:destination="@id/chargeGame" />
+    </fragment>
+    <fragment
+        android:id="@+id/chargeGame"
+        android:name="com.example.forestescape.ChargeGame"
+        android:label="fragment_charge_game"
+        tools:layout="@layout/fragment_charge_game" >
+        <action
+            android:id="@+id/action_chargeGame_to_mapGame"
+            app:destination="@id/mapGame" />
+        <action
+            android:id="@+id/action_chargeGame_to_noGame"
+            app:destination="@id/noGame" />
+        <action
+            android:id="@+id/action_chargeGame_to_passwordGame"
+            app:destination="@id/passwordGame" />
+        <action
+            android:id="@+id/action_chargeGame_to_scanGame"
+            app:destination="@id/scanGame" />
     </fragment>
 </navigation>

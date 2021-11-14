@@ -19,10 +19,10 @@
     </style>
 
     <style name="ThemeOverlay.ForestEscape.FullscreenContainer" parent="">
-         <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
-         <item name="fullscreenTextColor">@color/light_blue_A400</item>
-         <item name="windowActionBar">false</item>
-         <item name="windowNoTitle">true</item>
-         <item name="android:windowFullscreen">true</item>
-     </style>
- </resources>
+        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
+        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>
