@@ -1,24 +1,21 @@
 package com.example.forestescape
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.forestescape.databinding.FragmentChargeGameBinding
 import com.example.forestescape.model.CurrentGame
 import com.example.forestescape.viewmodel.ChargeGameViewModel
 import com.example.forestescape.viewmodel.CurrentGameSharedViewModel
 import android.view.animation.AlphaAnimation
+import com.example.forestescape.databinding.FragmentChargeGameBinding
 import com.example.forestescape.viewmodel.LightSharedViewModel
 
 
@@ -29,9 +26,6 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
 
     private var _binding: FragmentChargeGameBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +34,7 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
     ): View? {
 
         _binding = FragmentChargeGameBinding.inflate(inflater, container, false)
-        return binding.root
+        return _binding!!.root
 
     }
 
@@ -65,57 +59,57 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
         }
         chargeGameViewModel.isCharging.observe(requireActivity()) { isCharging ->
             if (isCharging == false) {
-                binding.zero.clearAnimation()
-                binding.one.clearAnimation()
-                binding.two.clearAnimation()
-                binding.three.clearAnimation()
-                binding.four.clearAnimation()
+               _binding?.zero?.clearAnimation()
+               _binding?.one?.clearAnimation()
+               _binding?.two?.clearAnimation()
+               _binding?.three?.clearAnimation()
+               _binding?.four?.clearAnimation()
             }
         }
 
         chargeGameViewModel.charge.observe(requireActivity()) { charge ->
             when {
                 charge < 20 -> {
-                    binding.zero.visibility = VISIBLE
-                    binding.zero.startAnimation(anim)
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.zero?.startAnimation(anim)
                 }
                 charge in 20..39 -> {
-                    binding.zero.clearAnimation()
-                    binding.zero.visibility = VISIBLE
-                    binding.one.visibility = VISIBLE
-                    binding.one.startAnimation(anim)
+                   _binding?.zero?.clearAnimation()
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.one?.visibility = VISIBLE
+                   _binding?.one?.startAnimation(anim)
                 }
                 charge in 40..59 -> {
-                    binding.one.clearAnimation()
-                    binding.zero.visibility = VISIBLE
-                    binding.one.visibility = VISIBLE
-                    binding.two.visibility = VISIBLE
-                    binding.two.startAnimation(anim)
+                   _binding?.one?.clearAnimation()
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.one?.visibility = VISIBLE
+                   _binding?.two?.visibility = VISIBLE
+                   _binding?.two?.startAnimation(anim)
                 }
                 charge in 60..79 -> {
-                    binding.two.clearAnimation()
-                    binding.zero.visibility = VISIBLE
-                    binding.one.visibility = VISIBLE
-                    binding.two.visibility = VISIBLE
-                    binding.three.visibility = VISIBLE
-                    binding.three.startAnimation(anim)
+                   _binding?.two?.clearAnimation()
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.one?.visibility = VISIBLE
+                   _binding?.two?.visibility = VISIBLE
+                   _binding?.three?.visibility = VISIBLE
+                   _binding?.three?.startAnimation(anim)
                 }
                 charge in 80..99 -> {
-                    binding.three.clearAnimation()
-                    binding.zero.visibility = VISIBLE
-                    binding.one.visibility = VISIBLE
-                    binding.two.visibility = VISIBLE
-                    binding.three.visibility = VISIBLE
-                    binding.four.visibility = VISIBLE
-                    binding.four.startAnimation(anim)
+                   _binding?.three?.clearAnimation()
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.one?.visibility = VISIBLE
+                   _binding?.two?.visibility = VISIBLE
+                   _binding?.three?.visibility = VISIBLE
+                   _binding?.four?.visibility = VISIBLE
+                   _binding?.four?.startAnimation(anim)
                 }
                 charge >= 99 -> {
-                    binding.four.clearAnimation()
-                    binding.zero.visibility = VISIBLE
-                    binding.one.visibility = VISIBLE
-                    binding.two.visibility = VISIBLE
-                    binding.three.visibility = VISIBLE
-                    binding.four.visibility = VISIBLE
+                   _binding?.four?.clearAnimation()
+                   _binding?.zero?.visibility = VISIBLE
+                   _binding?.one?.visibility = VISIBLE
+                   _binding?.two?.visibility = VISIBLE
+                   _binding?.three?.visibility = VISIBLE
+                   _binding?.four?.visibility = VISIBLE
                 }
             }
         }

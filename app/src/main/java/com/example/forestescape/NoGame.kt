@@ -23,9 +23,6 @@ class NoGame : Fragment(), Observer<CurrentGame> {
 
     private var _binding: FragmentNoGameBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,15 +30,15 @@ class NoGame : Fragment(), Observer<CurrentGame> {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNoGameBinding.inflate(inflater, container, false)
-        return binding.root
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dummyButton = binding.dummyButton
-        fullscreenContent = binding.fullscreenContent
-        fullscreenContentControls = binding.fullscreenContentControls
+        dummyButton = _binding?.dummyButton
+        fullscreenContent = _binding?.fullscreenContent
+        fullscreenContentControls = _binding?.fullscreenContentControls
 
         dummyButton?.setOnClickListener()
         {

@@ -24,9 +24,6 @@ class PasswordGame : Fragment(), Observer<CurrentGame> {
 
     private var _binding: FragmentPasswordGameBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +31,7 @@ class PasswordGame : Fragment(), Observer<CurrentGame> {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPasswordGameBinding.inflate(inflater, container, false)
-        return binding.root
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,27 +64,27 @@ class PasswordGame : Fragment(), Observer<CurrentGame> {
             }
         }
         passwordGameViewModel.password.observe(requireActivity()) {
-            binding.linearLayout.removeAllViews()
+            _binding?.linearLayout?.removeAllViews()
             it.forEach { char -> addViewFromInputValue(char) }
         }
     }
 
     private fun buttonsListeners() {
-        binding.imageButton1.setOnClickListener { passwordGameViewModel.addLetter(1) }
-        binding.imageButton2.setOnClickListener { passwordGameViewModel.addLetter(2) }
-        binding.imageButton3.setOnClickListener { passwordGameViewModel.addLetter(3) }
-        binding.imageButton4.setOnClickListener { passwordGameViewModel.addLetter(4) }
-        binding.imageButton5.setOnClickListener { passwordGameViewModel.addLetter(5) }
-        binding.imageButton6.setOnClickListener { passwordGameViewModel.addLetter(6) }
-        binding.imageButton7.setOnClickListener { passwordGameViewModel.addLetter(7) }
-        binding.imageButton8.setOnClickListener { passwordGameViewModel.addLetter(8) }
-        binding.imageButton9.setOnClickListener { passwordGameViewModel.addLetter(9) }
+        _binding?.imageButton1?.setOnClickListener { passwordGameViewModel.addLetter(1) }
+        _binding?.imageButton2?.setOnClickListener { passwordGameViewModel.addLetter(2) }
+        _binding?.imageButton3?.setOnClickListener { passwordGameViewModel.addLetter(3) }
+        _binding?.imageButton4?.setOnClickListener { passwordGameViewModel.addLetter(4) }
+        _binding?.imageButton5?.setOnClickListener { passwordGameViewModel.addLetter(5) }
+        _binding?.imageButton6?.setOnClickListener { passwordGameViewModel.addLetter(6) }
+        _binding?.imageButton7?.setOnClickListener { passwordGameViewModel.addLetter(7) }
+        _binding?.imageButton8?.setOnClickListener { passwordGameViewModel.addLetter(8) }
+        _binding?.imageButton9?.setOnClickListener { passwordGameViewModel.addLetter(9) }
     }
 
     private fun addViewFromInputValue(char: Int) {
         val imageView = ImageView(requireContext())
         resolveInputChar(char, imageView)
-        binding.linearLayout.addView(imageView)
+        _binding?.linearLayout?.addView(imageView)
     }
 
     private fun resolveInputChar(char: Int, imageView: ImageView) {

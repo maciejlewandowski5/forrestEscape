@@ -45,22 +45,16 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
 
     private val backgroundRenderer = BackgroundRenderer()
     private val augmentedImageRenderer: AugmentedImageRenderer = AugmentedImageRenderer()
-
-
     private var session: Session? = null
-
-
     private val augmentedImageMap: MutableMap<Int, Pair<AugmentedImage, Anchor>> = HashMap()
 
-
-    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentScanGameBinding.inflate(inflater, container, false)
-        return binding.root
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,7 +84,7 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
     }
 
     private fun setupRenderer() {
-        surfaceView = binding.surfaceview
+        surfaceView = _binding?.surfaceview
         surfaceView!!.preserveEGLContextOnPause = true
         surfaceView!!.setEGLContextClientVersion(2)
         surfaceView!!.setEGLConfigChooser(8, 8, 8, 8, 16, 0) // Alpha used for plane blending.
@@ -98,7 +92,7 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
         surfaceView!!.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         surfaceView!!.setWillNotDraw(false)
 
-        fitToScanView = binding.imageViewFitToScan
+        fitToScanView = _binding?.imageViewFitToScan
     }
 
     override fun onResume() {

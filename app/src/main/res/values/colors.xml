@@ -19,4 +19,10 @@
     <color name="specifin_neon_green">#52B788</color>
     <color name="light_neon_green">#95D5B2</color>
     <color name="very_light_neon_green">#B9FAD6</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
+    <color name="dark_green">#1B4332</color>
+    <color name="middle_red">#E71D36</color>
+    <color name="shaded_dark_green">#2D6A4F</color>
 </resources>

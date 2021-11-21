@@ -18,12 +18,12 @@ class SurfaceSizeViewModel(application: Application) : AndroidViewModel(applicat
     inner class SurfaceSizeLiveData : LiveData<DisplayGeometry>() {
         private val display: Display? = initializeDisplay()
 
-        private fun initializeDisplay() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            getApplication<Application>().applicationContext.display
-        } else {
+        private fun initializeDisplay() = //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        //    getApplication<Application>().applicationContext.display
+      //  } else {
             (getApplication<Application>()
                 .getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        }
+      //  }
 
         fun onSurfaceChanged(width: Int, height: Int) {
             display?.rotation?.let {

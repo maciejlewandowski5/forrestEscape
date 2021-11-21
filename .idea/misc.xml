@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/battery_top.xml" value="0.22314814814814815" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/button_stroke.xml" value="0.15104166666666666" />
+        <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/compass_arrow.xml" value="0.22962962962962963" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/fifth_battery.xml" value="0.22314814814814815" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/fit_to_scan.xml" value="0.12916666666666668" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/fourth_battery.xml" value="0.22314814814814815" />
@@ -32,6 +33,7 @@
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/fragment_password_game.xml" value="0.2" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/fragment_scan_game.xml" value="0.18" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/no_game.xml" value="0.14855072463768115" />
+        <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/sample_map_view.xml" value="0.4" />
       </map>
     </option>
   </component>
