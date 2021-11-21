@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var currentGameSharedViewModel: CurrentGameSharedViewModel
     private lateinit var lightSharedViewModel: LightSharedViewModel
+    private lateinit var mapSharedViewModel: MapSharedViewModel
 
     private var mUserRequestedInstall: Boolean = true
 
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         setupBatteryLevelViewModel()
         setupLocationViewModel()
         lightSharedViewModel = ViewModelProvider(this).get(LightSharedViewModel::class.java)
+        mapSharedViewModel = ViewModelProvider(this).get(MapSharedViewModel::class.java)
     }
 
     private fun setupPermissionsViewModel() {
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity() {
             value?.let {
                 gameViewModel.setSensorsData(it)
                 lightSharedViewModel.setLight(it.light)
+                mapSharedViewModel.setAzimuth(it.azimuth.toFloat())
             }
         }
     }
@@ -89,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         locationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
         locationViewModel.location.observe(this) { value ->
             gameViewModel.setLocation(value)
+            mapSharedViewModel.setLocation(value)
         }
     }
 
@@ -175,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         val activityManager = applicationContext
             .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
-        activityManager.moveTaskToFront(taskId, 0)
+   //     activityManager.moveTaskToFront(taskId, 0)
     }
 
     override fun onBackPressed() {

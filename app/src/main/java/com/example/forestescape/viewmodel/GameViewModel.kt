@@ -19,6 +19,7 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
     val gameModel: MutableStateLiveData<Game> = _gameModel
 
     val currentGame: MutableStateLiveData<CurrentGame> = MutableStateLiveData()
+    private var previousUpdate: Long = System.currentTimeMillis()
 
     @ExperimentalCoroutinesApi
     fun initializeGameSession(deviceId: String): Job {
@@ -39,7 +40,7 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
     @ExperimentalCoroutinesApi
     private suspend fun collectCurrentGame(key: String) {
 
-            repository.currentGameAsFlow(key).collect { currentGame.postSuccess(it) }
+        repository.currentGameAsFlow(key).collect { currentGame.postSuccess(it) }
         //collect {  }
     }
 
@@ -53,21 +54,44 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
 
     fun setSensorsData(sensorsData: SensorsData) {
         getGame()?.also {
-            it.light = sensorsData.light
-            it.azimuth = sensorsData.azimuth
-            it.deviceRotationX = sensorsData.deviceRotationX
-            it.deviceRotationY = sensorsData.deviceRotationY
-            it.deviceRotationZ = sensorsData.deviceRotationZ
+            it.light = if (sensorsData.light.isFinite()) {
+                sensorsData.light
+            } else {
+                0f
+            }
+            it.azimuth = if (sensorsData.azimuth.isFinite()) {
+                sensorsData.azimuth.toFloat()
+            } else {
+                0f
+            }
+            it.deviceRotationX = if (sensorsData.deviceRotationX.isFinite()) {
+                sensorsData.deviceRotationX
+            } else {
+                0f
+            }
+            it.deviceRotationZ = if (sensorsData.deviceRotationZ.isFinite()) {
+                sensorsData.deviceRotationZ
+            } else {
+                0f
+            }
+            it.deviceRotationY = if (sensorsData.deviceRotationY.isFinite()) {
+                sensorsData.deviceRotationY
+            } else {
+                0f
+            }
             _gameModel.postSuccess(it)
-            sendGameSession(
-                mapOf(
-                    "light" to sensorsData.light.toDouble(),
-                    "azimuth" to sensorsData.azimuth.toDouble(),
-                    "deviceRotationX" to sensorsData.deviceRotationX.toDouble(),
-                    "deviceRotationY" to sensorsData.deviceRotationY.toDouble(),
-                    "deviceRotationZ" to sensorsData.deviceRotationZ.toDouble(),
+            if (System.currentTimeMillis() - previousUpdate > 1000) {
+                previousUpdate = System.currentTimeMillis()
+                sendGameSession(
+                    mapOf(
+                        "light" to it.light.toDouble(),
+                        "azimuth" to it.azimuth.toDouble(),
+                        "deviceRotationX" to it.deviceRotationX.toDouble(),
+                        "deviceRotationY" to it.deviceRotationY.toDouble(),
+                        "deviceRotationZ" to it.deviceRotationZ.toDouble(),
+                    )
                 )
-            )
+            }
         }
     }
 

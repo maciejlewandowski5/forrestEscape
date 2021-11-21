@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import kotlin.math.abs
 import kotlin.math.acos
+import kotlin.math.asin
 import kotlin.math.atan2
 
 class SensorViewModel(
@@ -26,6 +27,7 @@ class SensorViewModel(
         private val mHistoryMaxLength = 40
         private var mGravity: FloatArray? = null
         private var mMagnetic: FloatArray? = null
+        private var mRotation: FloatArray? = null
         private var mRotationMatrix = FloatArray(9)
         private var rotationPreviousValues: FloatArray? = null
         private var rotationX: Float = 0f
@@ -57,6 +59,9 @@ class SensorViewModel(
                     }
                     Sensor.TYPE_MAGNETIC_FIELD -> {
                         mMagnetic = event.values.clone()
+                    }
+                    Sensor.TYPE_ROTATION_VECTOR -> {
+                        mRotation = event.values.clone()
                     }
                     Sensor.TYPE_GAME_ROTATION_VECTOR -> {
                         if (rotationPreviousValues != null) {
@@ -90,8 +95,8 @@ class SensorViewModel(
                         )
                     ) {
                         val inclination = acos(mRotationMatrix[8].toDouble()).toFloat()
-                        mFacing = if (inclination < TWENTY_FIVE_DEGREE_IN_RADIAN
-                            || inclination > ONE_FIFTY_FIVE_DEGREE_IN_RADIAN
+                        mFacing = if (inclination < TWENTY_FIVE_DEGREE_IN_RADIAN ||
+                            inclination > ONE_FIFTY_FIVE_DEGREE_IN_RADIAN
                         ) {
                             clearRotHist()
                             Float.NaN
@@ -102,7 +107,35 @@ class SensorViewModel(
                     }
                 }
             }
-            postValue(SensorsData(mFacing ?: 0f, light, rotationX, rotationY, rotationZ))
+
+            var azimuth =
+                mRotation?.get(2)?.times(2 * 180)?.div(Math.PI)?.plus(0)?.toDouble() ?: 0.0
+            //(mFacing?.toDouble()?.times( 180))?.div(Math.PI) ?: 0.0
+            azimuth = if (azimuth < 0) {
+                360 + azimuth
+            } else {
+                azimuth
+            }
+            postValue(
+                SensorsData(
+                    azimuth,
+                    light,
+                    rotationX,
+                    rotationY,
+                    rotationZ
+                )
+            )
+            /*postValue(
+                SensorsData(
+                    asin(rotationZ.toDouble()) * 2 / Math.PI * 180 + 180,
+                    light,
+                    rotationX,
+                    rotationY,
+                    rotationZ
+                )
+            )
+
+             */
         }
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -123,6 +156,11 @@ class SensorViewModel(
             sensorManager.let { sm ->
                 sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD).let {
                     sm.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+                }
+            }
+            sensorManager.let { sm ->
+                sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR).let {
+                    sm.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME)
                 }
             }
             sensorManager.let { sm ->
@@ -179,13 +217,13 @@ class SensorViewModel(
 }
 
 data class SensorsData(
-    val azimuth: Float,
+    val azimuth: Double,
     val light: Float,
     val deviceRotationX: Float,
     val deviceRotationY: Float,
     val deviceRotationZ: Float,
 )
 
-class AzimuthCalculator{
+class AzimuthCalculator {
 
 }
