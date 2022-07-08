@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.ForestEscape.FullscreenContainer"
     tools:context=".MapGame">
 
 
-    <com.example.forestescape.MapView
-        android:id="@+id/map"
-        style="@style/Widget.Theme.ForestEscape.MyView"
+    <com.example.forestescape.MapViewCustom xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="0dp"
-        android:paddingBottom="0dp" />
+        mapbox:mapbox_cameraTargetLat="59.31"
+        mapbox:mapbox_cameraTargetLng="18.06"
+        mapbox:mapbox_cameraZoom="18.0" />
 
 </FrameLayout>

@@ -6,18 +6,17 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.forestescape.databinding.FragmentChargeGameBinding
 import com.example.forestescape.model.CurrentGame
 import com.example.forestescape.viewmodel.ChargeGameViewModel
 import com.example.forestescape.viewmodel.CurrentGameSharedViewModel
-import android.view.animation.AlphaAnimation
-import com.example.forestescape.databinding.FragmentChargeGameBinding
 import com.example.forestescape.viewmodel.LightSharedViewModel
-
 
 class ChargeGame : Fragment(), Observer<CurrentGame> {
     private lateinit var currentGameSharedViewModelViewModel: CurrentGameSharedViewModel
@@ -25,7 +24,6 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
     private lateinit var lightSharedViewModel: LightSharedViewModel
 
     private var _binding: FragmentChargeGameBinding? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +33,6 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
 
         _binding = FragmentChargeGameBinding.inflate(inflater, container, false)
         return _binding!!.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,61 +56,60 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
         }
         chargeGameViewModel.isCharging.observe(requireActivity()) { isCharging ->
             if (isCharging == false) {
-               _binding?.zero?.clearAnimation()
-               _binding?.one?.clearAnimation()
-               _binding?.two?.clearAnimation()
-               _binding?.three?.clearAnimation()
-               _binding?.four?.clearAnimation()
+                _binding?.zero?.clearAnimation()
+                _binding?.one?.clearAnimation()
+                _binding?.two?.clearAnimation()
+                _binding?.three?.clearAnimation()
+                _binding?.four?.clearAnimation()
             }
         }
 
         chargeGameViewModel.charge.observe(requireActivity()) { charge ->
             when {
                 charge < 20 -> {
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.zero?.startAnimation(anim)
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.zero?.startAnimation(anim)
                 }
                 charge in 20..39 -> {
-                   _binding?.zero?.clearAnimation()
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.one?.visibility = VISIBLE
-                   _binding?.one?.startAnimation(anim)
+                    _binding?.zero?.clearAnimation()
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.one?.visibility = VISIBLE
+                    _binding?.one?.startAnimation(anim)
                 }
                 charge in 40..59 -> {
-                   _binding?.one?.clearAnimation()
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.one?.visibility = VISIBLE
-                   _binding?.two?.visibility = VISIBLE
-                   _binding?.two?.startAnimation(anim)
+                    _binding?.one?.clearAnimation()
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.one?.visibility = VISIBLE
+                    _binding?.two?.visibility = VISIBLE
+                    _binding?.two?.startAnimation(anim)
                 }
                 charge in 60..79 -> {
-                   _binding?.two?.clearAnimation()
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.one?.visibility = VISIBLE
-                   _binding?.two?.visibility = VISIBLE
-                   _binding?.three?.visibility = VISIBLE
-                   _binding?.three?.startAnimation(anim)
+                    _binding?.two?.clearAnimation()
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.one?.visibility = VISIBLE
+                    _binding?.two?.visibility = VISIBLE
+                    _binding?.three?.visibility = VISIBLE
+                    _binding?.three?.startAnimation(anim)
                 }
                 charge in 80..99 -> {
-                   _binding?.three?.clearAnimation()
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.one?.visibility = VISIBLE
-                   _binding?.two?.visibility = VISIBLE
-                   _binding?.three?.visibility = VISIBLE
-                   _binding?.four?.visibility = VISIBLE
-                   _binding?.four?.startAnimation(anim)
+                    _binding?.three?.clearAnimation()
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.one?.visibility = VISIBLE
+                    _binding?.two?.visibility = VISIBLE
+                    _binding?.three?.visibility = VISIBLE
+                    _binding?.four?.visibility = VISIBLE
+                    _binding?.four?.startAnimation(anim)
                 }
                 charge >= 99 -> {
-                   _binding?.four?.clearAnimation()
-                   _binding?.zero?.visibility = VISIBLE
-                   _binding?.one?.visibility = VISIBLE
-                   _binding?.two?.visibility = VISIBLE
-                   _binding?.three?.visibility = VISIBLE
-                   _binding?.four?.visibility = VISIBLE
+                    _binding?.four?.clearAnimation()
+                    _binding?.zero?.visibility = VISIBLE
+                    _binding?.one?.visibility = VISIBLE
+                    _binding?.two?.visibility = VISIBLE
+                    _binding?.three?.visibility = VISIBLE
+                    _binding?.four?.visibility = VISIBLE
                 }
             }
         }
-
     }
 
     override fun onResume() {
@@ -150,7 +146,7 @@ class ChargeGame : Fragment(), Observer<CurrentGame> {
                 findNavController().navigate(ChargeGameDirections.actionChargeGameToNoGame())
             }
             CurrentGame.CHARGE -> {
-                //do nothing
+                // do nothing
             }
             CurrentGame.SCAN -> {
                 findNavController().navigate(ChargeGameDirections.actionChargeGameToScanGame())

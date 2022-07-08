@@ -30,7 +30,7 @@
         android:id="@+id/noGame"
         android:name="com.example.forestescape.NoGame"
         android:label="fragment_no_game"
-        tools:layout="@layout/fragment_no_game" >
+        tools:layout="@layout/fragment_no_game">
         <action
             android:id="@+id/action_noGame_to_passwordGame"
             app:destination="@id/passwordGame" />
@@ -48,7 +48,7 @@
         android:id="@+id/mapGame"
         android:name="com.example.forestescape.MapGame"
         android:label="fragment_map_game"
-        tools:layout="@layout/fragment_map_game" >
+        tools:layout="@layout/fragment_map_game">
         <action
             android:id="@+id/action_mapGame_to_noGame"
             app:destination="@id/noGame" />
@@ -66,7 +66,7 @@
         android:id="@+id/scanGame"
         android:name="com.example.forestescape.ScanGame"
         android:label="fragment_scan_game"
-        tools:layout="@layout/fragment_scan_game" >
+        tools:layout="@layout/fragment_scan_game">
         <action
             android:id="@+id/action_scanGame_to_noGame"
             app:destination="@id/noGame" />
@@ -84,7 +84,7 @@
         android:id="@+id/chargeGame"
         android:name="com.example.forestescape.ChargeGame"
         android:label="fragment_charge_game"
-        tools:layout="@layout/fragment_charge_game" >
+        tools:layout="@layout/fragment_charge_game">
         <action
             android:id="@+id/action_chargeGame_to_mapGame"
             app:destination="@id/mapGame" />

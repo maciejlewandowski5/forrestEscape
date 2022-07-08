@@ -1,7 +1,6 @@
 package com.example.forestescape
 
 import android.content.ContentValues.TAG
-import android.net.Uri
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.os.Bundle
@@ -16,8 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.example.forestescape.databinding.FragmentScanGameBinding
 import com.example.forestescape.model.CurrentGame
 import com.example.forestescape.renderer.AugmentedImageRenderer
@@ -30,7 +27,6 @@ import java.io.IOException
 import java.util.HashMap
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-
 
 class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
     private lateinit var currentGameSharedViewModelViewModel: CurrentGameSharedViewModel
@@ -68,7 +64,6 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
             }
         }
         setupViewModels()
-
     }
 
     private fun setupViewModels() {
@@ -79,7 +74,6 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
             ViewModelProvider(requireActivity()).get(SurfaceSizeViewModel::class.java)
         surfaceSizeViewModel.surfaceSizeLiveData.observe(viewLifecycleOwner) {
             session?.setDisplayGeometry(it.rotation, it.width, it.height)
-
         }
     }
 
@@ -122,7 +116,6 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
             session = null
         }
         super.onDestroy()
-
     }
 
     override fun onDestroyView() {
@@ -205,7 +198,10 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
     }
 
     private fun drawAugmentedImages(
-        frame: Frame, projmtx: FloatArray, viewmtx: FloatArray, colorCorrectionRgba: FloatArray
+        frame: Frame,
+        projmtx: FloatArray,
+        viewmtx: FloatArray,
+        colorCorrectionRgba: FloatArray
     ) {
         val updatedAugmentedImages = frame.getUpdatedTrackables(
             AugmentedImage::class.java
@@ -216,7 +212,7 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
                 TrackingState.PAUSED -> {
                     val text = String.format("Detected Image %d", augmentedImage.index)
                     Log.i(TAG, text)
-                    //requireActivity().runOnUiThread { fitToScanView!!.visibility = View.VISIBLE }
+                    // requireActivity().runOnUiThread { fitToScanView!!.visibility = View.VISIBLE }
                 }
                 TrackingState.TRACKING -> {
                     requireActivity().runOnUiThread { fitToScanView!!.visibility = View.INVISIBLE }

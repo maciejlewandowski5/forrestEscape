@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.5520833333333334" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/battery_top.xml" value="0.22314814814814815" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/button_stroke.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/drawable/compass_arrow.xml" value="0.22962962962962963" />
@@ -34,6 +35,7 @@
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/fragment_scan_game.xml" value="0.18" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/no_game.xml" value="0.14855072463768115" />
         <entry key="..\:/Users/macie/AndroidStudioProjects/ForestEscape/app/src/main/res/layout/sample_map_view.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/fragment_map_game.xml" value="0.28940568475452194" />
       </map>
     </option>
   </component>
