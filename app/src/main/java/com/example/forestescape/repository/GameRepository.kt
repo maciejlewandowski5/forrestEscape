@@ -22,7 +22,7 @@ import kotlin.IllegalStateException
 
 interface GameRepository {
     @ExperimentalCoroutinesApi
-    fun currentGameAsFlow(key: String): Flow<CurrentGame>
+    fun currentGame(key: String): Flow<CurrentGame>
     suspend fun initializeGameSession(deviceId: String): Either<Exception, String>
     suspend fun sendGameSession(mapToUpdate: Map<String, Double>, game: Game?)
 }
@@ -37,19 +37,19 @@ class FireBaseGameRepository : GameRepository {
         } ?: IllegalStateException("Could not initialize game session").left()
     }
 
-
     @ExperimentalCoroutinesApi
-    override fun currentGameAsFlow(gameId: String): Flow<CurrentGame> = callbackFlow {
-        val callback = (object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                sendNonNullValue(snapshot)
-            }
+    override fun currentGame(gameId: String): Flow<CurrentGame> = callbackFlow {
+        val callback = (
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    sendNonNullValue(snapshot)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                cancel(CancellationException("API Error", error.toException()))
+                override fun onCancelled(error: DatabaseError) {
+                    cancel(CancellationException("API Error", error.toException()))
+                }
             }
-
-        })
+            )
         val addValueEventListener = valueEventListener(gameId, callback)
         awaitClose {
             addValueEventListener.onCancelled(
@@ -74,7 +74,6 @@ class FireBaseGameRepository : GameRepository {
         Log.e(FireBaseGameRepository::class.java.name, "Error sending fetched currentGame", a)
     }
 
-
     override suspend fun sendGameSession(
         mapToUpdate: Map<String, Double>,
         game: Game?,
@@ -87,6 +86,3 @@ class FireBaseGameRepository : GameRepository {
         private const val CURRENT_GAME = "currentGame"
     }
 }
-
-
-

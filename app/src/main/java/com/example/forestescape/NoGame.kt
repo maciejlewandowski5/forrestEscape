@@ -1,6 +1,8 @@
 package com.example.forestescape
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,6 @@ class NoGame : Fragment(), Observer<CurrentGame> {
 
     private var _binding: FragmentNoGameBinding? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,8 +41,7 @@ class NoGame : Fragment(), Observer<CurrentGame> {
         fullscreenContent = _binding?.fullscreenContent
         fullscreenContentControls = _binding?.fullscreenContentControls
 
-        dummyButton?.setOnClickListener()
-        {
+        dummyButton?.setOnClickListener() {
             val action = NoGameDirections.actionNoGameToPasswordGame()
             findNavController().navigate(action)
         }
@@ -54,6 +54,7 @@ class NoGame : Fragment(), Observer<CurrentGame> {
             ViewModelProvider(requireActivity()).get(CurrentGameSharedViewModel::class.java)
 
         currentGameSharedViewModelViewModel.currentGame.observe(requireActivity(), this)
+        currentGameSharedViewModelViewModel.setCurrentGame(CurrentGame.MAP)
     }
 
     override fun onPause() {
@@ -76,26 +77,17 @@ class NoGame : Fragment(), Observer<CurrentGame> {
     }
 
     override fun onChanged(it: CurrentGame?) {
-
-        println("NO GAME OBSERVED CURRENT GAME: $it")
-
+        Log.i(ContentValues.TAG, "NO GAME OBSERVED CURRENT GAME: $it")
         when (it) {
-            CurrentGame.MAP -> {
+            CurrentGame.MAP ->
                 findNavController().navigate(NoGameDirections.actionNoGameToMapGame())
-            }
-            CurrentGame.PASSWORD -> {
+            CurrentGame.PASSWORD ->
                 findNavController().navigate(NoGameDirections.actionNoGameToPasswordGame())
-            }
-            CurrentGame.NO_GAME -> {
-                //do nothing
-            }
-            CurrentGame.CHARGE -> {
+            CurrentGame.NO_GAME -> Unit
+            CurrentGame.CHARGE ->
                 findNavController().navigate(NoGameDirections.actionNoGameToChargeGame())
-            }
-            CurrentGame.SCAN -> {
+            CurrentGame.SCAN ->
                 findNavController().navigate(NoGameDirections.actionNoGameToScanGame())
-            }
         }
     }
 }
-

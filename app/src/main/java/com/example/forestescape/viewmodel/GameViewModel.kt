@@ -40,7 +40,7 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
     @ExperimentalCoroutinesApi
     private suspend fun collectCurrentGame(key: String) {
 
-        repository.currentGameAsFlow(key).collect { currentGame.postSuccess(it) }
+        repository.currentGame(key).collect { currentGame.postSuccess(it) }
         //collect {  }
     }
 
@@ -131,7 +131,7 @@ class GameViewModelFactory(private val repository: GameRepository) : ViewModelPr
 
     @Suppress("UNCHECKED_CAST") // TODO
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GameViewModel(repository) as T;
+        return GameViewModel(repository) as T
     }
 
 }

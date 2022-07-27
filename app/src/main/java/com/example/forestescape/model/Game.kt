@@ -65,7 +65,7 @@ data class Game(
     )
     companion object {
         private val dateFormatter = DateTimeFormatter.ISO_DATE_TIME
-        private val startingGame = CurrentGame.NO_GAME
+        private val startingGame = CurrentGame.MAP
     }
 }
 
