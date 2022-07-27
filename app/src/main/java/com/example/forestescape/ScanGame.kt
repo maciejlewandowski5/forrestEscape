@@ -212,7 +212,7 @@ class ScanGame : Fragment(), Observer<CurrentGame>, GLSurfaceView.Renderer {
                 TrackingState.PAUSED -> {
                     val text = String.format("Detected Image %d", augmentedImage.index)
                     Log.i(TAG, text)
-                    // requireActivity().runOnUiThread { fitToScanView!!.visibility = View.VISIBLE }
+                    requireActivity().runOnUiThread { fitToScanView!!.visibility = View.VISIBLE }
                 }
                 TrackingState.TRACKING -> {
                     requireActivity().runOnUiThread { fitToScanView!!.visibility = View.INVISIBLE }

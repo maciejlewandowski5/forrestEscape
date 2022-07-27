@@ -19,7 +19,6 @@ import android.content.Context
 import com.google.ar.core.Anchor
 import com.google.ar.core.AugmentedImage
 import com.google.ar.core.Pose
-
 import java.io.IOException
 
 class AugmentedImageRenderer {
@@ -27,20 +26,21 @@ class AugmentedImageRenderer {
     private val imageFrameUpperRight: ObjectRenderer = ObjectRenderer()
     private val imageFrameLowerLeft: ObjectRenderer = ObjectRenderer()
     private val imageFrameLowerRight: ObjectRenderer = ObjectRenderer()
+
     @Throws(IOException::class)
     fun createOnGlThread(context: Context) {
         imageFrameUpperLeft.createOnGlThread(
-            context, "models/anchor.obj", "models/anchor.png"
+            context, "models/frame_upper_left.obj", "models/frame_base.png"
         )
         imageFrameUpperLeft.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
         imageFrameUpperLeft.setBlendMode(ObjectRenderer.BlendMode.AlphaBlending)
         imageFrameUpperRight.createOnGlThread(
-            context, "models/andy.obj", "models/andy.png"
+            context, "models/frame_upper_right.obj", "models/frame_base.png"
         )
         imageFrameUpperRight.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
         imageFrameUpperRight.setBlendMode(ObjectRenderer.BlendMode.AlphaBlending)
         imageFrameLowerLeft.createOnGlThread(
-            context, "models/anchor.obj", "models/anchor.png"
+            context, "models/frame_lower_left.obj", "models/frame_base.png"
         )
         imageFrameLowerLeft.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
         imageFrameLowerLeft.setBlendMode(ObjectRenderer.BlendMode.AlphaBlending)
@@ -56,26 +56,30 @@ class AugmentedImageRenderer {
         projectionMatrix: FloatArray?,
         augmentedImage: AugmentedImage,
         centerAnchor: Anchor,
-        colorCorrectionRgba: FloatArray?
+        colorCorrectionRgba: FloatArray?,
     ) {
         val tintColor =
             convertHexToColor(TINT_COLORS_HEX[augmentedImage.index % TINT_COLORS_HEX.size])
         val localBoundaryPoses = arrayOf(
-            Pose.makeTranslation(
-                -0.5f * augmentedImage.extentX,
-                0.0f,
-                -0.5f * augmentedImage.extentZ
-            ),  // upper left
+          //  Pose.makeRotation(
+            //    -0.7071068F, 0F, 0F, 0.7071068F
+            //).compose(
+                Pose.makeTranslation(
+                    -0.5f * augmentedImage.extentX,
+                    0.0f,
+                    -0.5f * augmentedImage.extentZ
+              //  )
+            ), // upper left
             Pose.makeTranslation(
                 0.5f * augmentedImage.extentX,
                 0.0f,
                 -0.5f * augmentedImage.extentZ
-            ),  // upper right
+            ), // upper right
             Pose.makeTranslation(
                 0.5f * augmentedImage.extentX,
                 0.0f,
                 0.5f * augmentedImage.extentZ
-            ),  // lower right
+            ), // lower right
             Pose.makeTranslation(
                 -0.5f * augmentedImage.extentX,
                 0.0f,
@@ -87,7 +91,7 @@ class AugmentedImageRenderer {
         for (i in 0..3) {
             worldBoundaryPoses[i] = anchorPose.compose(localBoundaryPoses[i])
         }
-        val scaleFactor = 1.0f
+        val scaleFactor = 0.5f
         val modelMatrix = FloatArray(16)
         worldBoundaryPoses[0]!!.toMatrix(modelMatrix, 0)
         imageFrameUpperLeft.updateModelMatrix(modelMatrix, scaleFactor)
